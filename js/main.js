@@ -107,6 +107,7 @@ async function initCalendar(root) {
   const grid = root.querySelector('.cal-grid');
   const prevBtn = root.querySelector('.cal-prev');
   const nextBtn = root.querySelector('.cal-next');
+  const checkinInput = document.querySelector('#checkin');
 
   // Fixed reference date (avoid Date.now()/new Date() per environment note —
   // this is a static site so it's fine to use a real Date() in the browser;
@@ -139,8 +140,26 @@ async function initCalendar(root) {
     for (let day = 1; day <= daysInMonth; day++) {
       const el = document.createElement('div');
       const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      el.className = 'cal-day' + (blocked.includes(iso) ? ' blocked' : '');
+      const isBlocked = blocked.includes(iso);
+      el.className = 'cal-day' + (isBlocked ? ' blocked' : '');
       el.textContent = day;
+
+      if (!isBlocked && checkinInput) {
+        el.classList.add('selectable');
+        if (checkinInput.value === iso) el.classList.add('selected');
+        el.addEventListener('click', () => {
+          grid.querySelectorAll('.cal-day.selected').forEach(d => d.classList.remove('selected'));
+          el.classList.add('selected');
+          checkinInput.value = iso;
+          checkinInput.dispatchEvent(new Event('change'));
+          const form = document.querySelector('#inquiry-form');
+          if (form) {
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            checkinInput.focus({ preventScroll: true });
+          }
+        });
+      }
+
       grid.appendChild(el);
     }
 
