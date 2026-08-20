@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book / Contact — Naz's Farm House</title>
+<meta name="description" content="Check availability and send an inquiry for a stay or an event at Naz's Farm House, Perumpally, Thamarassery, Kozhikode.">
+<link rel="icon" type="image/png" href="images/logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Marcellus&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="main-nav">
+    <a href="index.html" class="nav-brand">
+      <img src="images/logo-small.png" alt="Naz's Farm House">
+      <span class="nav-brand-text">Naz's Farm House</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="rooms.html">Rooms &amp; Gallery</a>
+      <a href="events.html">Events</a>
+      <a href="book.html" class="active">Book / Contact</a>
+    </div>
+    <a href="book.html" class="nav-cta">Book Now</a>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </nav>
+  <div class="nav-mobile-panel">
+    <a href="index.html">Home</a>
+    <a href="rooms.html">Rooms &amp; Gallery</a>
+    <a href="events.html">Events</a>
+    <a href="book.html">Book / Contact</a>
+    <a href="book.html" class="nav-cta">Book Now</a>
+  </div>
+</header>
+
+<section class="page-hero" style="min-height:38vh;">
+  <img src="images/valley-view-bedroom.jpg" alt="The Valley View Bedroom window seat">
+  <div class="page-hero-veil"></div>
+  <div class="page-hero-content">
+    <div class="page-hero-label">Book / Contact</div>
+    <h1 style="font-family:'Marcellus'; font-size:clamp(30px,4.5vw,48px);">The venue is ready — are you?</h1>
+  </div>
+</section>
+
+<section class="book-section">
+  <div class="wrap">
+
+    <!-- AVAILABILITY CALENDAR -->
+    <div class="section-head on-dark">
+      <div class="section-label">Availability</div>
+      <h2>Check the calendar</h2>
+      <p>Updated manually as bookings come in — dates in red are already taken.</p>
+    </div>
+    <div class="calendar-wrap" id="availability-calendar">
+      <div class="calendar-header">
+        <h3></h3>
+        <div class="cal-nav">
+          <button class="cal-prev" aria-label="Previous month">‹</button>
+          <button class="cal-next" aria-label="Next month">›</button>
+        </div>
+      </div>
+      <div class="cal-grid"></div>
+      <div class="cal-legend">
+        <span><span class="legend-dot open"></span>Available</span>
+        <span><span class="legend-dot blocked"></span>Booked</span>
+      </div>
+    </div>
+
+    <!-- INQUIRY FORM + CONTACT -->
+    <div class="section-head on-dark">
+      <div class="section-label">Send an Inquiry</div>
+      <h2>One form for a stay or an event</h2>
+      <p>Tell us which, and we'll take it from there.</p>
+    </div>
+
+    <div class="book-panel">
+      <form class="book-form" id="inquiry-form" action="https://formspree.io/f/xqpzwnze" method="POST">
+        <label for="inquiry-type">I'm inquiring about</label>
+        <select id="inquiry-type" name="inquiry_type">
+          <option value="stay">A stay</option>
+          <option value="event">An event / function</option>
+        </select>
+
+        <div class="row2">
+          <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required>
+          </div>
+          <div>
+            <label for="phone">Phone / WhatsApp</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91" required>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div>
+            <label for="checkin">Check-in / Event Date</label>
+            <input type="date" id="checkin" name="checkin">
+          </div>
+          <div>
+            <label for="checkout">Check-out (if a stay)</label>
+            <input type="date" id="checkout" name="checkout">
+          </div>
+        </div>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" placeholder="Tell us a bit about your stay or event — number of guests, occasion, anything we should know."></textarea>
+
+        <button type="submit" class="book-submit">Send Inquiry</button>
+        <p class="form-fineprint">Sending an inquiry doesn't confirm your dates — we'll follow up by phone or WhatsApp to finalize.</p>
+        <div class="form-status"></div>
+      </form>
+
+      <div class="book-info">
+        <h3>Reach us directly</h3>
+        <div class="book-info-row"><span class="ico">📞</span><span><a href="tel:+919946564710">+91 99465 64710</a><br><a href="tel:+919946766307">+91 99467 66307</a></span></div>
+        <div class="book-info-row"><span class="ico">✉️</span><span><a href="mailto:nazs.farmhouse1@gmail.com">nazs.farmhouse1@gmail.com</a></span></div>
+        <div class="book-info-row"><span class="ico">📍</span><span>Kannottipara–Perumpalli Road,<br>Perumpally, Thamarassery,<br>Kozhikode, Kerala</span></div>
+        <div class="book-info-row"><span class="ico">📷</span><span><a href="https://instagram.com/nazs_farm_house_" target="_blank" rel="noopener">@nazs_farm_house_</a></span></div>
+        <div class="book-info-row"><span class="ico">💰</span><span><strong style="color:#fff;">₹7,500 / night</strong><br>whole property (both bedrooms, hall &amp; majlis)</span></div>
+        <div class="book-note">Check-in/out flexible by arrangement. Pets welcome.</div>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div class="section-head on-dark">
+      <div class="section-label">Find Us</div>
+      <h2>Perumpally, Thamarassery, Kozhikode</h2>
+    </div>
+    <div class="map-embed">
+      <iframe
+        src="https://www.google.com/maps?q=Puthuppadi,+Thamarassery,+Kozhikode,+Kerala&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Map to Naz's Farm House, Perumpally, Thamarassery, Kozhikode">
+      </iframe>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="script">Naz's Farm House</div>
+    <div>Perumpally, Thamarassery · Kozhikode, Kerala</div>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="rooms.html">Rooms &amp; Gallery</a>
+      <a href="events.html">Events</a>
+      <a href="book.html">Book / Contact</a>
+      <a href="https://instagram.com/nazs_farm_house_" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
