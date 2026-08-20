@@ -94,11 +94,12 @@ nav.main-nav{
 .btn-dark{
   display:inline-block;
   font-size:12.5px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase;
-  border:1.4px solid var(--forest); color:var(--forest);
-  padding:15px 30px; border-radius:1px; background:none; cursor:pointer;
+  border:1.4px solid var(--forest); background:var(--forest); color:#fff;
+  padding:15px 30px; border-radius:1px; cursor:pointer; white-space:nowrap;
   transition: background .2s, color .2s;
 }
-.btn-dark:hover{ background:var(--forest); color:#fff; }
+.btn-dark:hover{ background:none; color:var(--forest); }
+@media (max-width:480px){ .btn-dark{ white-space:normal; text-align:center; } }
 
 /* ---------- Page hero (interior pages) ---------- */
 .page-hero{
@@ -159,6 +160,14 @@ nav.main-nav{
 @media (max-width:900px){
   .story .wrap{ grid-template-columns:1fr; gap:36px; }
   .story-photo img{ height:340px; }
+}
+
+/* ---------- Location teaser (Home) ---------- */
+.location-grid{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+.location-grid .story-photo img{ height:420px; object-fit:cover; }
+@media (max-width:900px){
+  .location-grid{ grid-template-columns:1fr; gap:32px; }
+  .location-grid .story-photo img{ height:280px; }
 }
 
 /* ---------- Card grids (rooms / gallery / events) ---------- */
