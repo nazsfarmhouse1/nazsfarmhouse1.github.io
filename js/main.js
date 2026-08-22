@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------- Gallery lightbox ---------- */
-  const galleryItems = document.querySelectorAll('.gallery-item');
+  const galleryItems = document.querySelectorAll('.gallery-item, .room-card');
   if (galleryItems.length) {
     initGalleryLightbox(galleryItems);
   }
@@ -185,10 +185,11 @@ async function initCalendar(root) {
 }
 
 /* ---------- Gallery lightbox ----------
-   Each .gallery-item shows one cover photo in the grid, same as before —
-   the grid never grows. Click any tile to open a full-screen viewer.
-   To give a tile more than one photo (without adding new grid tiles),
-   add a data-images attribute with a JSON array of image paths, e.g.:
+   Each .gallery-item (and each bedroom .room-card) shows one cover photo,
+   same as before — the grid never grows. Click any tile to open a
+   full-screen viewer. To give a tile more than one photo (without adding
+   new grid tiles), add a data-images attribute with a JSON array of image
+   paths, e.g.:
      <div class="gallery-item" data-images='["images/hall-1.jpg","images/hall-2.jpg"]'>
    The first path should match the tile's visible <img src> (it's used as
    the cover). Tiles with more than one photo get a small "📷 N" badge so
@@ -196,7 +197,7 @@ async function initCalendar(root) {
 function initGalleryLightbox(items) {
   const groups = Array.from(items).map((item) => {
     const img = item.querySelector('img');
-    const labelEl = item.querySelector('.gallery-item-label');
+    const labelEl = item.querySelector('.gallery-item-label, .room-name');
     const label = labelEl ? labelEl.textContent.trim() : '';
 
     let images = [];
