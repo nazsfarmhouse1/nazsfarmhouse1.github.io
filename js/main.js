@@ -91,6 +91,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (calRoot) {
     initCalendar(calRoot);
   }
+
+  /* ---------- Gallery lightbox ---------- */
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  if (galleryItems.length) {
+    initGalleryLightbox(galleryItems);
+  }
 });
 
 async function initCalendar(root) {
@@ -176,4 +182,128 @@ async function initCalendar(root) {
   });
 
   render();
+}
+
+/* ---------- Gallery lightbox ----------
+   Each .gallery-item shows one cover photo in the grid, same as before —
+   the grid never grows. Click any tile to open a full-screen viewer.
+   To give a tile more than one photo (without adding new grid tiles),
+   add a data-images attribute with a JSON array of image paths, e.g.:
+     <div class="gallery-item" data-images='["images/hall-1.jpg","images/hall-2.jpg"]'>
+   The first path should match the tile's visible <img src> (it's used as
+   the cover). Tiles with more than one photo get a small "📷 N" badge so
+   visitors know there's more to see. */
+function initGalleryLightbox(items) {
+  const groups = Array.from(items).map((item) => {
+    const img = item.querySelector('img');
+    const labelEl = item.querySelector('.gallery-item-label');
+    const label = labelEl ? labelEl.textContent.trim() : '';
+
+    let images = [];
+    const raw = item.getAttribute('data-images');
+    if (raw) {
+      try {
+        images = JSON.parse(raw);
+      } catch (err) {
+        console.warn('Bad data-images JSON on a gallery item — falling back to the single cover photo.', err);
+      }
+    }
+    if (!images.length && img) images = [img.getAttribute('src')];
+
+    if (images.length > 1) {
+      const badge = document.createElement('div');
+      badge.className = 'gallery-count';
+      badge.textContent = `📷 ${images.length}`;
+      item.appendChild(badge);
+    }
+
+    return { images, label };
+  });
+
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = `
+    <button type="button" class="lightbox-close" aria-label="Close">✕</button>
+    <button type="button" class="lightbox-arrow lightbox-prev" aria-label="Previous photo">‹</button>
+    <button type="button" class="lightbox-arrow lightbox-next" aria-label="Next photo">›</button>
+    <div class="lightbox-stage">
+      <div class="lightbox-img-wrap"><img alt=""></div>
+      <div class="lightbox-caption">
+        <div class="lb-name"></div>
+        <div class="lb-count"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(lb);
+
+  const lbImg = lb.querySelector('img');
+  const lbName = lb.querySelector('.lb-name');
+  const lbCount = lb.querySelector('.lb-count');
+  const closeBtn = lb.querySelector('.lightbox-close');
+  const prevBtn2 = lb.querySelector('.lightbox-prev');
+  const nextBtn2 = lb.querySelector('.lightbox-next');
+
+  let activeGroup = null;
+  let activeIndex = 0;
+
+  function show() {
+    const { images, label } = activeGroup;
+    lbImg.src = images[activeIndex];
+    lbImg.alt = label;
+    lbName.textContent = label;
+    const multi = images.length > 1;
+    lbCount.textContent = multi ? `${activeIndex + 1} / ${images.length}` : '';
+    prevBtn2.hidden = !multi;
+    nextBtn2.hidden = !multi;
+  }
+
+  function open(group) {
+    activeGroup = group;
+    activeIndex = 0;
+    show();
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function step(dir) {
+    if (!activeGroup) return;
+    const len = activeGroup.images.length;
+    activeIndex = (activeIndex + dir + len) % len;
+    show();
+  }
+
+  items.forEach((item, i) => {
+    item.addEventListener('click', () => open(groups[i]));
+  });
+
+  closeBtn.addEventListener('click', close);
+  prevBtn2.addEventListener('click', () => step(-1));
+  nextBtn2.addEventListener('click', () => step(1));
+
+  lb.addEventListener('click', (e) => {
+    if (e.target === lb) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  let touchStartX = null;
+  lb.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) step(dx > 0 ? -1 : 1);
+    touchStartX = null;
+  });
 }
