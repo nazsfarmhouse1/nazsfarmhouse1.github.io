@@ -86,9 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ---------- "Send via WhatsApp" button — builds a pre-filled
-       wa.me message from whatever the visitor has typed and opens it
-       in a new tab. Doesn't touch the Formspree submission above;
-       the visitor can use either button, or both. ---------- */
+       wa.me message from whatever the visitor has typed. Navigates in
+       the SAME tab (not window.open/_blank) — on mobile, opening a
+       new tab just to hand off to the WhatsApp app leaves that new
+       tab stuck on a blank page once the app takes over. Navigating
+       the current tab means there's no orphaned blank tab left behind;
+       the visitor lands back on this same page when they return from
+       WhatsApp. Doesn't touch the Formspree submission above — the
+       visitor can use either button, or both. ---------- */
     const waBtn = form.querySelector('#whatsapp-send-btn');
     if (waBtn) {
       waBtn.addEventListener('click', () => {
@@ -109,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (message) lines.push(`Message: ${message}`);
 
         const text = encodeURIComponent(lines.join('\n'));
-        window.open(`https://wa.me/919946564710?text=${text}`, '_blank', 'noopener');
+        window.location.href = `https://wa.me/919946564710?text=${text}`;
       });
     }
   }
