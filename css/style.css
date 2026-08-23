@@ -277,6 +277,11 @@ nav.main-nav{
 .book-submit{ margin-top:28px; width:100%; background:var(--taupe); color:var(--forest-dark); border:none; padding:16px; font-family:'Jost'; font-weight:500; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; border-radius:2px; cursor:pointer; }
 .book-submit:hover{ opacity:0.9; }
 .book-submit:disabled{ opacity:0.6; cursor:not-allowed; }
+.book-submit-row{ display:flex; gap:12px; }
+.book-submit-row .book-submit{ flex:1; }
+.book-submit-whatsapp{ margin-top:28px; flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:#25D366; color:#fff; border:none; padding:16px; font-family:'Jost'; font-weight:500; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; border-radius:2px; cursor:pointer; }
+.book-submit-whatsapp:hover{ opacity:0.9; }
+@media (max-width:480px){ .book-submit-row{ flex-direction:column; } }
 .form-fineprint{ margin-top:12px; font-size:12.5px; line-height:1.5; color:rgba(248,244,234,0.5); text-align:center; }
 .book-info{ background:rgba(0,0,0,0.18); padding:48px; }
 .book-info h3{ font-family:'Marcellus'; font-size:20px; margin-bottom:24px; color:#fff; }
