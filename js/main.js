@@ -84,6 +84,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (submitBtn) submitBtn.disabled = false;
       }
     });
+
+    /* ---------- "Send via WhatsApp" button — builds a pre-filled
+       wa.me message from whatever the visitor has typed and opens it
+       in a new tab. Doesn't touch the Formspree submission above;
+       the visitor can use either button, or both. ---------- */
+    const waBtn = form.querySelector('#whatsapp-send-btn');
+    if (waBtn) {
+      waBtn.addEventListener('click', () => {
+        const get = (name) => (form.querySelector(`[name="${name}"]`)?.value || '').trim();
+        const typeVal = get('inquiry_type') === 'event' ? 'an event / function' : 'a stay';
+        const name = get('name');
+        const phone = get('phone');
+        const checkin = get('checkin');
+        const checkout = get('checkout');
+        const message = get('message');
+
+        const lines = [`Hi! I'd like to inquire about ${typeVal} at Naz's Farm House.`];
+        if (name) lines.push(`Name: ${name}`);
+        if (phone) lines.push(`Phone: ${phone}`);
+        if (checkin || checkout) {
+          lines.push(`Dates: ${checkin || '—'}${checkout ? ' to ' + checkout : ''}`);
+        }
+        if (message) lines.push(`Message: ${message}`);
+
+        const text = encodeURIComponent(lines.join('\n'));
+        window.open(`https://wa.me/919946564710?text=${text}`, '_blank', 'noopener');
+      });
+    }
   }
 
   /* ---------- Availability calendar ---------- */
