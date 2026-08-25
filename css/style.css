@@ -295,6 +295,16 @@ nav.main-nav{
 .form-status.err{ color:#E39A8B; }
 @media (max-width:900px){ .book-panel{ grid-template-columns:1fr; } .book-form,.book-info{ padding:32px 24px; } .book-form .row2{ grid-template-columns:1fr; } }
 
+/* ---------- FAQ (Book page) ---------- */
+.faq-list{ max-width:760px; margin:0 auto 60px; display:flex; flex-direction:column; gap:10px; }
+.faq-item{ background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); border-radius:4px; overflow:hidden; }
+.faq-item summary{ list-style:none; cursor:pointer; padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; font-family:'Marcellus'; font-size:16.5px; color:#fff; }
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item summary::after{ content:'+'; font-family:'Jost'; font-size:22px; font-weight:300; color:var(--taupe-light); flex-shrink:0; transition:transform 0.2s ease; }
+.faq-item[open] summary::after{ transform:rotate(45deg); }
+.faq-item[open] summary{ border-bottom:1px solid rgba(255,255,255,0.12); }
+.faq-item .faq-answer{ padding:4px 24px 22px; font-size:14.5px; line-height:1.65; color:rgba(248,244,234,0.75); }
+
 /* ---------- Availability calendar ---------- */
 .calendar-wrap{ background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); border-radius:4px; padding:36px; margin-bottom:60px; }
 .calendar-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
