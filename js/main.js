@@ -65,6 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
             status.textContent = 'Thanks — your inquiry is in. We\'ll get back to you soon, usually over WhatsApp or phone.';
             status.className = 'form-status show ok';
           }
+          if (typeof gtag === 'function') {
+            gtag('event', 'generate_lead', {
+              event_category: 'inquiry_form',
+              event_label: (form.querySelector('[name="inquiry_type"]')?.value) || 'stay',
+            });
+          }
         } else {
           const data = await response.json().catch(() => null);
           const message = data && data.errors
@@ -114,10 +120,39 @@ document.addEventListener('DOMContentLoaded', () => {
         if (message) lines.push(`Message: ${message}`);
 
         const text = encodeURIComponent(lines.join('\n'));
+        if (typeof gtag === 'function') {
+          gtag('event', 'contact_whatsapp', { event_category: 'engagement', event_label: 'form_button' });
+        }
         window.location.href = `https://wa.me/919946564710?text=${text}`;
       });
     }
   }
+
+  /* ---------- WhatsApp click tracking (floating button, present on
+     every page) — separate from the form's own WhatsApp button above,
+     which is tracked where it's defined. ---------- */
+  const waFloat = document.querySelector('.whatsapp-float');
+  if (waFloat) {
+    waFloat.addEventListener('click', () => {
+      if (typeof gtag === 'function') {
+        gtag('event', 'contact_whatsapp', { event_category: 'engagement', event_label: 'floating_button' });
+      }
+    });
+  }
+
+  /* ---------- Contact-link conversion tracking (site-wide) ----------
+     One delegated listener catches phone-call and Airbnb-booking clicks
+     wherever they appear, so this doesn't need touching every page. */
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link || typeof gtag !== 'function') return;
+    const href = link.getAttribute('href') || '';
+    if (href.startsWith('tel:')) {
+      gtag('event', 'contact_phone', { event_category: 'engagement', event_label: href.replace('tel:', '') });
+    } else if (href.includes('airbnb.com')) {
+      gtag('event', 'click_airbnb_link', { event_category: 'engagement', event_label: 'book_page' });
+    }
+  });
 
   /* ---------- Availability calendar ---------- */
   const calRoot = document.querySelector('#availability-calendar');
