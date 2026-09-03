@@ -1,6 +1,12 @@
 {
   "_comment": "Dates listed here show as unavailable on the Book/Contact calendar. Add/remove ISO dates (YYYY-MM-DD) as bookings come in.",
   "blockedDates": [
-    "2026-08-30"
+    "2026-08-30",
+    "2026-09-13",
+    "2026-09-15",
+    "2026-09-19",
+    "2026-09-20",
+    "2026-10-03",
+    "2026-10-04"
   ]
 }
