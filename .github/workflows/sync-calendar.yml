@@ -1,0 +1,40 @@
+name: Sync booking calendar
+
+# Keeps data/blocked-dates.json up to date automatically from Airbnb,
+# Booking.com, and the "Naz's Farm House Bookings" Google Calendar
+# (WhatsApp/phone bookings). See scripts/sync_blocked_dates.py for the
+# actual logic. Requires three repo secrets to be set (Settings ->
+# Secrets and variables -> Actions):
+#   AIRBNB_ICAL_URL
+#   BOOKINGCOM_ICAL_URL
+#   BOOKINGS_ICAL_URL
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'   # every 3 hours
+  workflow_dispatch: {}      # adds a manual "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync blocked dates from calendars
+        env:
+          AIRBNB_ICAL_URL: ${{ secrets.AIRBNB_ICAL_URL }}
+          BOOKINGCOM_ICAL_URL: ${{ secrets.BOOKINGCOM_ICAL_URL }}
+          BOOKINGS_ICAL_URL: ${{ secrets.BOOKINGS_ICAL_URL }}
+        run: python3 scripts/sync_blocked_dates.py
+
+      - name: Commit changes if the blocked dates actually changed
+        run: |
+          git config user.name "booking-sync-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/blocked-dates.json
+          git diff --cached --quiet || git commit -m "Auto-sync blocked dates from Airbnb/Booking.com/Google Calendar"
+          git push
+
