@@ -362,6 +362,8 @@ footer.site-footer .script{ font-size:26px; color:#fff; margin-bottom:6px; }
 footer.site-footer .foot-links{ display:flex; gap:24px; justify-content:center; margin-top:16px; font-size:12.5px; flex-wrap:wrap; }
 footer.site-footer a{ opacity:0.85; }
 footer.site-footer a:hover{ opacity:1; }
+footer.site-footer .foot-credit{ margin-top:18px; font-size:11px; opacity:0.5; }
+footer.site-footer .foot-credit a{ opacity:1; text-decoration:underline; }
 
 /* ---------- Sticky mobile CTA ---------- */
 .sticky-cta{
