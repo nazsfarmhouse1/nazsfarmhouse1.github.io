@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4G4ST97SRS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4G4ST97SRS');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Booking | Naz's Farm House, Thamarassery</title>
+<meta name="description" content="Send your stay details to Naz's Farm House in seconds — name, contact, guest count, and check-in/check-out. Built for sharing over WhatsApp.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://nazsfarmhouse.in/quick-book.html">
+<link rel="icon" type="image/png" href="images/logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Marcellus&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* ---------- Quick Booking page — scoped additions ---------- */
+  .qb-section{ background: var(--forest-dark); color: var(--ivory); padding:70px 0 90px; }
+  .qb-wrap{ max-width:560px; margin:0 auto; padding:0 20px; }
+  .qb-panel{ background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12); border-radius:4px; overflow:hidden; }
+  .qb-form{ padding:40px 32px; }
+  @media (max-width:520px){ .qb-form{ padding:32px 20px; } }
+  .qb-form label{ display:block; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--taupe-light); margin-bottom:8px; margin-top:20px; }
+  .qb-form label:first-child{ margin-top:0; }
+  .qb-form input, .qb-form select{ width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.18); color:#fff; padding:13px 14px; font-family:'Jost'; font-size:15px; border-radius:2px; }
+  .qb-form input::placeholder{ color:rgba(255,255,255,0.35); }
+  /* Force a consistent height/rendering for date & time pickers on iOS/Android */
+  .qb-form input[type="date"], .qb-form input[type="time"]{ color-scheme:dark; }
+  .qb-row2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:420px){ .qb-row2{ grid-template-columns:1fr; } }
+  .qb-optional{ font-weight:400; text-transform:none; letter-spacing:0; opacity:0.6; font-size:11.5px; }
+  .qb-checkout-note{
+    margin-top:10px; padding:11px 13px; border-radius:3px; font-size:13px; line-height:1.45;
+    background:rgba(200,90,70,0.16); border:1px solid rgba(200,90,70,0.4); color:#F0C6BC;
+    display:none;
+  }
+  .qb-checkout-note.show{ display:block; }
+  .qb-form .book-submit-whatsapp{ margin-top:14px; width:100%; }
+  .qb-header-note{ text-align:center; margin-bottom:34px; }
+  .qb-header-note .section-label{ margin-bottom:10px; }
+  .qb-header-note p{ color:rgba(248,244,234,0.72); font-size:14.5px; max-width:420px; margin:0 auto; }
+  .qb-guidelines-check{ display:flex; align-items:flex-start; gap:10px; margin-top:30px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); }
+  .qb-guidelines-check input{ width:auto; margin-top:3px; accent-color:var(--taupe); flex-shrink:0; }
+  .qb-guidelines-check label{ text-transform:none; letter-spacing:0; font-size:13.5px; color:rgba(248,244,234,0.75); margin:0; line-height:1.5; }
+  .qb-guidelines-check a{ color:var(--taupe-light); text-decoration:underline; }
+  .qb-guidelines-note{
+    margin-top:10px; padding:11px 13px; border-radius:3px; font-size:13px; line-height:1.45;
+    background:rgba(200,90,70,0.16); border:1px solid rgba(200,90,70,0.4); color:#F0C6BC;
+    display:none;
+  }
+  .qb-guidelines-note.show{ display:block; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="main-nav">
+    <a href="index.html" class="nav-brand">
+      <img src="images/logo-small.png" alt="Naz's Farm House">
+      <span class="nav-brand-text">Naz's Farm House</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="rooms.html">Rooms &amp; Gallery</a>
+      <a href="events.html">Events</a>
+      <a href="blog.html">Travel Guide</a>
+      <a href="book.html">Book / Contact</a>
+    </div>
+    <a href="book.html" class="nav-cta">Book Now</a>
+    <button class="nav-toggle" aria-label="Toggle menu">☰</button>
+  </nav>
+  <div class="nav-mobile-panel">
+    <a href="index.html">Home</a>
+    <a href="rooms.html">Rooms &amp; Gallery</a>
+    <a href="events.html">Events</a>
+    <a href="blog.html">Travel Guide</a>
+    <a href="book.html">Book / Contact</a>
+    <a href="book.html" class="nav-cta">Book Now</a>
+  </div>
+</header>
+
+<section class="page-hero" style="min-height:30vh;">
+  <img src="images/valley-hillside-sunset.jpg" alt="Sunset over the forested hills, seen from the terrace">
+  <div class="page-hero-veil"></div>
+  <div class="page-hero-content">
+    <div class="page-hero-label">Quick Booking</div>
+    <h1 style="font-family:'Marcellus'; font-size:clamp(28px,4.5vw,42px);">Send us your details</h1>
+  </div>
+</section>
+
+<section class="qb-section">
+  <div class="qb-wrap">
+
+    <div class="qb-header-note">
+      <div class="section-label" style="color:var(--taupe-light);">Fill this in, we'll confirm on WhatsApp</div>
+      <p>Takes under a minute. Check-out after 11:00 AM counts as an extra night — the form will flag it as you fill it in.</p>
+    </div>
+
+    <div class="qb-panel">
+      <form class="qb-form" id="quick-book-form">
+        <label for="qb-name">Name</label>
+        <input type="text" id="qb-name" name="name" placeholder="Your full name" required>
+
+        <label for="qb-phone">Mobile Number</label>
+        <input type="tel" id="qb-phone" name="phone" placeholder="+91" required>
+
+        <label for="qb-email">Email <span class="qb-optional">(optional)</span></label>
+        <input type="email" id="qb-email" name="email" placeholder="you@example.com">
+
+        <label for="qb-guests">Number of Guests</label>
+        <input type="number" id="qb-guests" name="guests" placeholder="e.g. 4" min="1" max="20" required>
+
+        <div class="qb-row2">
+          <div>
+            <label for="qb-checkin-date">Check-in Date</label>
+            <input type="date" id="qb-checkin-date" name="checkin_date" required>
+          </div>
+          <div>
+            <label for="qb-checkin-time">Check-in Time</label>
+            <input type="time" id="qb-checkin-time" name="checkin_time" value="14:00" required>
+          </div>
+        </div>
+
+        <div class="qb-row2">
+          <div>
+            <label for="qb-checkout-date">Check-out Date</label>
+            <input type="date" id="qb-checkout-date" name="checkout_date" required>
+          </div>
+          <div>
+            <label for="qb-checkout-time">Check-out Time</label>
+            <input type="time" id="qb-checkout-time" name="checkout_time" value="11:00" required>
+          </div>
+        </div>
+        <div class="qb-checkout-note" id="qb-checkout-note">
+          ⚠️ Check-out after 11:00 AM will be considered an extra night, and billed accordingly.
+        </div>
+
+        <div class="qb-guidelines-check">
+          <input type="checkbox" id="qb-guidelines-agree" name="guidelines_agree">
+          <label for="qb-guidelines-agree">I've read and agree to the <a href="guest-guidelines.html" target="_blank" rel="noopener">Guest Guidelines</a> (property rules, quiet hours, check-in/out times, and cancellation policy).</label>
+        </div>
+        <div class="qb-guidelines-note" id="qb-guidelines-note">
+          Please review and check the Guest Guidelines box above before sending.
+        </div>
+
+        <button type="button" class="book-submit-whatsapp" id="qb-whatsapp-btn">
+          <svg viewBox="0 0 32 32" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="#fff"><path d="M16.004 3C9.376 3 4 8.373 4 15c0 2.386.7 4.61 1.902 6.472L4 29l7.72-1.865A11.94 11.94 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3Zm0 21.818c-1.94 0-3.75-.57-5.27-1.55l-.378-.238-4.582 1.107 1.128-4.47-.246-.393A9.77 9.77 0 0 1 5.19 15c0-5.964 4.85-10.818 10.814-10.818 5.964 0 10.814 4.854 10.814 10.818 0 5.964-4.85 10.818-10.814 10.818Zm5.98-8.106c-.328-.164-1.94-.957-2.24-1.067-.3-.11-.518-.164-.737.164-.218.328-.846 1.067-1.037 1.286-.19.218-.382.246-.71.082-.328-.164-1.386-.51-2.64-1.628-.976-.87-1.635-1.945-1.827-2.273-.19-.328-.02-.505.144-.668.148-.147.328-.383.492-.574.164-.19.218-.328.328-.546.11-.218.055-.41-.027-.574-.082-.164-.737-1.777-1.01-2.434-.266-.64-.536-.553-.737-.563l-.628-.011c-.218 0-.573.082-.874.41-.3.328-1.147 1.121-1.147 2.735s1.174 3.172 1.337 3.39c.164.218 2.31 3.527 5.598 4.945.782.337 1.393.539 1.868.69.785.25 1.499.215 2.064.13.63-.094 1.94-.793 2.213-1.559.273-.766.273-1.422.19-1.559-.082-.137-.3-.218-.628-.383Z"/></svg>
+          Send
+        </button>
+        <p class="form-fineprint">Sending this doesn't confirm your dates — we'll follow up on WhatsApp to finalize.</p>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="script">Naz's Farm House</div>
+    <div>Puduppadi, Thamarassery · Kozhikode, Kerala</div>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="rooms.html">Rooms &amp; Gallery</a>
+      <a href="events.html">Events</a>
+      <a href="blog.html">Travel Guide</a>
+      <a href="book.html">Book / Contact</a>
+      <a href="guest-guidelines.html">Guest Guidelines</a>
+      <a href="https://instagram.com/nazs_farm_house_" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div class="foot-credit">Designed by <a href="https://www.endcredit.in" target="_blank" rel="noopener">www.endcredit.in</a></div>
+  </div>
+</footer>
+
+<a class="whatsapp-float" href="https://wa.me/919946564710?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20Naz%27s%20Farm%20House" aria-label="Chat with us on WhatsApp">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#fff"><path d="M16.004 3C9.376 3 4 8.373 4 15c0 2.386.7 4.61 1.902 6.472L4 29l7.72-1.865A11.94 11.94 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3Zm0 21.818c-1.94 0-3.75-.57-5.27-1.55l-.378-.238-4.582 1.107 1.128-4.47-.246-.393A9.77 9.77 0 0 1 5.19 15c0-5.964 4.85-10.818 10.814-10.818 5.964 0 10.814 4.854 10.814 10.818 0 5.964-4.85 10.818-10.814 10.818Zm5.98-8.106c-.328-.164-1.94-.957-2.24-1.067-.3-.11-.518-.164-.737.164-.218.328-.846 1.067-1.037 1.286-.19.218-.382.246-.71.082-.328-.164-1.386-.51-2.64-1.628-.976-.87-1.635-1.945-1.827-2.273-.19-.328-.02-.505.144-.668.148-.147.328-.383.492-.574.164-.19.218-.328.328-.546.11-.218.055-.41-.027-.574-.082-.164-.737-1.777-1.01-2.434-.266-.64-.536-.553-.737-.563l-.628-.011c-.218 0-.573.082-.874.41-.3.328-1.147 1.121-1.147 2.735s1.174 3.172 1.337 3.39c.164.218 2.31 3.527 5.598 4.945.782.337 1.393.539 1.868.69.785.25 1.499.215 2.064.13.63-.094 1.94-.793 2.213-1.559.273-.766.273-1.422.19-1.559-.082-.137-.3-.218-.628-.383Z"/></svg>
+</a>
+
+<script src="js/main.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('quick-book-form');
+    if (!form) return;
+
+    const checkoutTimeInput = document.getElementById('qb-checkout-time');
+    const note = document.getElementById('qb-checkout-note');
+
+    function isLateCheckout(timeStr) {
+      if (!timeStr) return false;
+      const [h, m] = timeStr.split(':').map(Number);
+      return (h * 60 + m) > (11 * 60); // after 11:00 AM
+    }
+
+    function updateCheckoutNote() {
+      note.classList.toggle('show', isLateCheckout(checkoutTimeInput.value));
+    }
+
+    checkoutTimeInput.addEventListener('input', updateCheckoutNote);
+    checkoutTimeInput.addEventListener('change', updateCheckoutNote);
+    updateCheckoutNote();
+
+    // Prevent any accidental native form submission (e.g. Enter key in a field)
+    form.addEventListener('submit', (e) => e.preventDefault());
+
+    // ---------- "Send" — pre-fills a WhatsApp message with everything typed so far ----------
+    // Gated on the Guest Guidelines checkbox: if it isn't ticked, we block the
+    // send and surface an inline prompt instead of silently doing nothing.
+    const waBtn = document.getElementById('qb-whatsapp-btn');
+    const guidelinesCheck = document.getElementById('qb-guidelines-agree');
+    const guidelinesNote = document.getElementById('qb-guidelines-note');
+
+    if (guidelinesCheck && guidelinesNote) {
+      guidelinesCheck.addEventListener('change', () => {
+        if (guidelinesCheck.checked) guidelinesNote.classList.remove('show');
+      });
+    }
+
+    if (waBtn) {
+      waBtn.addEventListener('click', () => {
+        if (guidelinesCheck && !guidelinesCheck.checked) {
+          guidelinesNote.classList.add('show');
+          guidelinesCheck.focus();
+          return;
+        }
+
+        const get = (id) => (document.getElementById(id)?.value || '').trim();
+        const name = get('qb-name');
+        const phone = get('qb-phone');
+        const email = get('qb-email');
+        const guests = get('qb-guests');
+        const checkinDate = get('qb-checkin-date');
+        const checkinTime = get('qb-checkin-time');
+        const checkoutDate = get('qb-checkout-date');
+        const checkoutTime = get('qb-checkout-time');
+        const late = isLateCheckout(checkoutTime);
+
+        const lines = ["Hi! I'd like to book a stay at Naz's Farm House."];
+        if (name) lines.push(`Name: ${name}`);
+        if (phone) lines.push(`Phone: ${phone}`);
+        if (email) lines.push(`Email: ${email}`);
+        if (guests) lines.push(`Guests: ${guests}`);
+        if (checkinDate) lines.push(`Check-in: ${checkinDate}${checkinTime ? ' at ' + checkinTime : ''}`);
+        if (checkoutDate) lines.push(`Check-out: ${checkoutDate}${checkoutTime ? ' at ' + checkoutTime : ''}`);
+        if (late) lines.push('Note: Check-out is after 11:00 AM — understood this counts as an extra night.');
+        lines.push('Guest Guidelines reviewed and agreed to.');
+
+        const text = encodeURIComponent(lines.join('\n'));
+        if (typeof gtag === 'function') {
+          gtag('event', 'contact_whatsapp', { event_category: 'engagement', event_label: 'quick_book_form' });
+        }
+        window.location.href = `https://wa.me/919946564710?text=${text}`;
+      });
+    }
+  });
+</script>
+</body>
+</html>
