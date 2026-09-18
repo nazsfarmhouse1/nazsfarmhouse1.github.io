@@ -47,6 +47,8 @@
   .qb-header-note{ text-align:center; margin-bottom:34px; }
   .qb-header-note .section-label{ margin-bottom:10px; }
   .qb-header-note p{ color:rgba(248,244,234,0.72); font-size:14.5px; max-width:420px; margin:0 auto; }
+  .qb-cal-label{ text-align:center; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--taupe-light); margin-bottom:14px; }
+  @media (max-width:520px){ .calendar-wrap{ padding:24px 18px; margin-bottom:36px; } }
   .qb-guidelines-check{ display:flex; align-items:flex-start; gap:10px; margin-top:30px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); }
   .qb-guidelines-check input{ width:auto; margin-top:3px; accent-color:var(--taupe); flex-shrink:0; }
   .qb-guidelines-check label{ text-transform:none; letter-spacing:0; font-size:13.5px; color:rgba(248,244,234,0.75); margin:0; line-height:1.5; }
@@ -102,6 +104,23 @@
     <div class="qb-header-note">
       <div class="section-label" style="color:var(--taupe-light);">Fill this in, we'll confirm on WhatsApp</div>
       <p>Takes under a minute. Check-out after 11:00 AM counts as an extra night — the form will flag it as you fill it in.</p>
+    </div>
+
+    <div class="qb-cal-label">Check availability first</div>
+    <div class="calendar-wrap" id="availability-calendar" data-checkin-selector="#qb-checkin-date" data-form-selector="#quick-book-form">
+      <div class="calendar-header">
+        <h3></h3>
+        <div class="cal-nav">
+          <button class="cal-prev" aria-label="Previous month">‹</button>
+          <button class="cal-next" aria-label="Next month">›</button>
+        </div>
+      </div>
+      <div class="cal-grid"></div>
+      <div class="cal-legend">
+        <span><span class="legend-dot open"></span>Available</span>
+        <span><span class="legend-dot blocked"></span>Booked</span>
+      </div>
+      <div class="cal-hint">Click a date to set it as your check-in below.</div>
     </div>
 
     <div class="qb-panel">
