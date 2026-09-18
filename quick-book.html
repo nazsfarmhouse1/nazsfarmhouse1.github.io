@@ -47,8 +47,12 @@
   .qb-header-note{ text-align:center; margin-bottom:34px; }
   .qb-header-note .section-label{ margin-bottom:10px; }
   .qb-header-note p{ color:rgba(248,244,234,0.72); font-size:14.5px; max-width:420px; margin:0 auto; }
-  .qb-cal-label{ text-align:center; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--taupe-light); margin-bottom:14px; }
-  @media (max-width:520px){ .calendar-wrap{ padding:24px 18px; margin-bottom:36px; } }
+  .qb-date-field{ position:relative; }
+  .qb-date-field input{ cursor:pointer; }
+  .qb-cal-popover{ position:absolute; top:calc(100% + 8px); left:0; z-index:40; width:280px; max-width:85vw; display:none; box-shadow:0 16px 40px rgba(0,0,0,0.5); }
+  .qb-cal-popover.open{ display:block; }
+  .qb-cal-popover.calendar-wrap{ padding:18px; margin-bottom:0; }
+  @media (max-width:420px){ .qb-cal-popover{ left:auto; right:0; } }
   .qb-guidelines-check{ display:flex; align-items:flex-start; gap:10px; margin-top:30px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); }
   .qb-guidelines-check input{ width:auto; margin-top:3px; accent-color:var(--taupe); flex-shrink:0; }
   .qb-guidelines-check label{ text-transform:none; letter-spacing:0; font-size:13.5px; color:rgba(248,244,234,0.75); margin:0; line-height:1.5; }
@@ -106,23 +110,6 @@
       <p>Takes under a minute. Check-out after 11:00 AM counts as an extra night — the form will flag it as you fill it in.</p>
     </div>
 
-    <div class="qb-cal-label">Check availability first</div>
-    <div class="calendar-wrap" id="availability-calendar" data-checkin-selector="#qb-checkin-date" data-form-selector="#quick-book-form">
-      <div class="calendar-header">
-        <h3></h3>
-        <div class="cal-nav">
-          <button class="cal-prev" aria-label="Previous month">‹</button>
-          <button class="cal-next" aria-label="Next month">›</button>
-        </div>
-      </div>
-      <div class="cal-grid"></div>
-      <div class="cal-legend">
-        <span><span class="legend-dot open"></span>Available</span>
-        <span><span class="legend-dot blocked"></span>Booked</span>
-      </div>
-      <div class="cal-hint">Click a date to set it as your check-in below.</div>
-    </div>
-
     <div class="qb-panel">
       <form class="qb-form" id="quick-book-form">
         <label for="qb-name">Name</label>
@@ -138,9 +125,23 @@
         <input type="number" id="qb-guests" name="guests" placeholder="e.g. 4" min="1" max="20" required>
 
         <div class="qb-row2">
-          <div>
+          <div class="qb-date-field">
             <label for="qb-checkin-date">Check-in Date</label>
-            <input type="date" id="qb-checkin-date" name="checkin_date" required>
+            <input type="text" id="qb-checkin-date" name="checkin_date" placeholder="Select date" autocomplete="off" readonly required>
+            <div class="calendar-wrap qb-cal-popover" id="qb-checkin-cal">
+              <div class="calendar-header">
+                <h3></h3>
+                <div class="cal-nav">
+                  <button type="button" class="cal-prev" aria-label="Previous month">‹</button>
+                  <button type="button" class="cal-next" aria-label="Next month">›</button>
+                </div>
+              </div>
+              <div class="cal-grid"></div>
+              <div class="cal-legend">
+                <span><span class="legend-dot open"></span>Available</span>
+                <span><span class="legend-dot blocked"></span>Booked</span>
+              </div>
+            </div>
           </div>
           <div>
             <label for="qb-checkin-time">Check-in Time</label>
@@ -149,9 +150,23 @@
         </div>
 
         <div class="qb-row2">
-          <div>
+          <div class="qb-date-field">
             <label for="qb-checkout-date">Check-out Date</label>
-            <input type="date" id="qb-checkout-date" name="checkout_date" required>
+            <input type="text" id="qb-checkout-date" name="checkout_date" placeholder="Select date" autocomplete="off" readonly required>
+            <div class="calendar-wrap qb-cal-popover" id="qb-checkout-cal">
+              <div class="calendar-header">
+                <h3></h3>
+                <div class="cal-nav">
+                  <button type="button" class="cal-prev" aria-label="Previous month">‹</button>
+                  <button type="button" class="cal-next" aria-label="Next month">›</button>
+                </div>
+              </div>
+              <div class="cal-grid"></div>
+              <div class="cal-legend">
+                <span><span class="legend-dot open"></span>Available</span>
+                <span><span class="legend-dot blocked"></span>Booked</span>
+              </div>
+            </div>
           </div>
           <div>
             <label for="qb-checkout-time">Check-out Time</label>
@@ -207,6 +222,111 @@
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('quick-book-form');
     if (!form) return;
+
+    // ---------- Check-in / Check-out date pickers — show blocked dates ----------
+    // Replaces native <input type="date"> (which can't be styled to show
+    // booked dates) with a small popover calendar anchored to each field,
+    // reusing the same .calendar-wrap/.cal-grid styling and blocked-dates
+    // data as the main site calendar.
+    let blockedDatesSet = new Set();
+    fetch('data/blocked-dates.json')
+      .then((res) => res.json())
+      .then((data) => {
+        blockedDatesSet = new Set(data.blockedDates || []);
+        document.querySelectorAll('.qb-cal-popover').forEach((p) => {
+          if (p.dataset.rendered === '1') p.dispatchEvent(new Event('_rerender'));
+        });
+      })
+      .catch((err) => console.warn('Could not load blocked-dates.json', err));
+
+    function closeAllDatePopovers() {
+      document.querySelectorAll('.qb-cal-popover.open').forEach((p) => p.classList.remove('open'));
+    }
+    document.addEventListener('click', closeAllDatePopovers);
+
+    function setupDatePicker(inputId, popoverId) {
+      const input = document.getElementById(inputId);
+      const popover = document.getElementById(popoverId);
+      if (!input || !popover) return;
+
+      const monthLabel = popover.querySelector('.calendar-header h3');
+      const grid = popover.querySelector('.cal-grid');
+      const prevBtn = popover.querySelector('.cal-prev');
+      const nextBtn = popover.querySelector('.cal-next');
+      const dowNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+      let current = new Date();
+      current.setDate(1);
+
+      function render() {
+        popover.dataset.rendered = '1';
+        grid.innerHTML = '';
+        dowNames.forEach((d) => {
+          const el = document.createElement('div');
+          el.className = 'cal-dow';
+          el.textContent = d;
+          grid.appendChild(el);
+        });
+
+        const year = current.getFullYear();
+        const month = current.getMonth();
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+          const el = document.createElement('div');
+          el.className = 'cal-day empty';
+          grid.appendChild(el);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const el = document.createElement('div');
+          const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const isBlocked = blockedDatesSet.has(iso);
+          el.className = 'cal-day' + (isBlocked ? ' blocked' : ' selectable');
+          el.textContent = day;
+          if (iso === input.value) el.classList.add('selected');
+
+          if (!isBlocked) {
+            el.addEventListener('click', () => {
+              input.value = iso;
+              input.dispatchEvent(new Event('change'));
+              popover.classList.remove('open');
+            });
+          }
+
+          grid.appendChild(el);
+        }
+
+        monthLabel.textContent = current.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+      }
+
+      popover.addEventListener('_rerender', render);
+
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        current.setMonth(current.getMonth() - 1);
+        render();
+      });
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        current.setMonth(current.getMonth() + 1);
+        render();
+      });
+
+      input.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willOpen = !popover.classList.contains('open');
+        closeAllDatePopovers();
+        if (willOpen) {
+          render();
+          popover.classList.add('open');
+        }
+      });
+      popover.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    setupDatePicker('qb-checkin-date', 'qb-checkin-cal');
+    setupDatePicker('qb-checkout-date', 'qb-checkout-cal');
 
     const checkoutTimeInput = document.getElementById('qb-checkout-time');
     const note = document.getElementById('qb-checkout-note');
