@@ -155,9 +155,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------- Availability calendar ---------- */
+  // Reused on both book.html (checkin field #checkin, form #inquiry-form)
+  // and quick-book.html (#qb-checkin-date, #quick-book-form) — the calendar
+  // root itself carries which field/form to wire up via data attributes,
+  // so this same widget works on either page without page-specific code.
   const calRoot = document.querySelector('#availability-calendar');
   if (calRoot) {
-    initCalendar(calRoot);
+    initCalendar(calRoot, {
+      checkinSelector: calRoot.dataset.checkinSelector || '#checkin',
+      formSelector: calRoot.dataset.formSelector || '#inquiry-form'
+    });
   }
 
   /* ---------- Gallery lightbox ---------- */
@@ -167,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-async function initCalendar(root) {
+async function initCalendar(root, opts = {}) {
   let blocked = [];
   try {
     const res = await fetch('data/blocked-dates.json');
@@ -181,7 +188,7 @@ async function initCalendar(root) {
   const grid = root.querySelector('.cal-grid');
   const prevBtn = root.querySelector('.cal-prev');
   const nextBtn = root.querySelector('.cal-next');
-  const checkinInput = document.querySelector('#checkin');
+  const checkinInput = document.querySelector(opts.checkinSelector || '#checkin');
 
   // Fixed reference date (avoid Date.now()/new Date() per environment note —
   // this is a static site so it's fine to use a real Date() in the browser;
@@ -226,7 +233,7 @@ async function initCalendar(root) {
           el.classList.add('selected');
           checkinInput.value = iso;
           checkinInput.dispatchEvent(new Event('change'));
-          const form = document.querySelector('#inquiry-form');
+          const form = document.querySelector(opts.formSelector || '#inquiry-form');
           if (form) {
             form.scrollIntoView({ behavior: 'smooth', block: 'center' });
             checkinInput.focus({ preventScroll: true });
