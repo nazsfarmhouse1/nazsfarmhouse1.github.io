@@ -49,9 +49,12 @@
   .qb-header-note p{ color:rgba(248,244,234,0.72); font-size:14.5px; max-width:420px; margin:0 auto; }
   .qb-date-field{ position:relative; }
   .qb-date-field input{ cursor:pointer; }
-  .qb-cal-popover{ position:absolute; top:calc(100% + 8px); left:0; z-index:40; width:280px; max-width:85vw; display:none; box-shadow:0 16px 40px rgba(0,0,0,0.5); }
+  .qb-cal-popover{ position:absolute; top:calc(100% + 8px); left:0; z-index:40; width:280px; max-width:85vw; display:none; box-shadow:0 16px 40px rgba(0,0,0,0.6); }
   .qb-cal-popover.open{ display:block; }
-  .qb-cal-popover.calendar-wrap{ padding:18px; margin-bottom:0; }
+  /* Solid background (not the translucent one .calendar-wrap normally uses) —
+     this floats OVER the rest of the form on narrow screens, so it needs to
+     fully cover what's behind it rather than letting it bleed through. */
+  .qb-cal-popover.calendar-wrap{ padding:18px; margin-bottom:0; background:var(--forest-dark); border-color:rgba(255,255,255,0.22); }
   @media (max-width:420px){ .qb-cal-popover{ left:auto; right:0; } }
   .qb-guidelines-check{ display:flex; align-items:flex-start; gap:10px; margin-top:30px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); }
   .qb-guidelines-check input{ width:auto; margin-top:3px; accent-color:var(--taupe); flex-shrink:0; }
