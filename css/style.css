@@ -126,6 +126,8 @@ nav.main-nav{
   background-size:cover; background-position:center; overflow:hidden;
 }
 .hero-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.hero-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+@media (prefers-reduced-motion: reduce){ .hero-video{ display:none; } }
 .hero-veil{
   position:absolute; inset:0;
   background:
