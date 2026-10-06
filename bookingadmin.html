@@ -132,7 +132,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
           <label for="kind">Type</label>
           <select id="kind">
             <option value="Stay">Overnight stay</option>
-            <option value="Day event">Day event / party</option>
+            <option value="Day event">Day event / party (not staying overnight)</option>
             <option value="Hold">Hold / not available</option>
           </select>
         </div>
@@ -170,7 +170,13 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   </section>
 
   <section class="card">
-    <h2>Upcoming entries on the bookings calendar</h2>
+    <h2>Booked on Airbnb / Booking.com</h2>
+    <p class="muted" style="margin-bottom:6px">Read-only, dates only. Guest details are in the Airbnb and Booking.com apps. Updates every 3 hours.</p>
+    <div id="platform"><p class="muted">Loading…</p></div>
+  </section>
+
+  <section class="card">
+    <h2>Manual entries (WhatsApp, phone, events)</h2>
     <p class="muted" style="margin-bottom:6px">Removing an entry frees its dates on the website, Airbnb and Booking.com within a few hours.</p>
     <div id="entries"><p class="muted">Loading…</p></div>
   </section>
@@ -253,7 +259,7 @@ async function refresh() {
     if (!list.ok) throw new Error(list.message || 'Could not load the calendar.');
     events = list.events;
     siteBlocked = new Set(site.blockedDates || []);
-    renderCal(); renderEntries();
+    renderCal(); renderEntries(); renderPlatform();
   } catch (err) {
     if (token) $('entries').innerHTML = '<div class="msg err"></div>', $('entries').firstChild.textContent = err.message;
   }
@@ -337,6 +343,26 @@ $('addForm').addEventListener('submit', async e => {
   $('addBtn').disabled = false; $('addBtn').textContent = 'Block these dates';
 });
 
+/* ---------- platform bookings (dates only) ---------- */
+function renderPlatform() {
+  const box = $('platform'); box.innerHTML = '';
+  const manual = manualDays();
+  const days = [...siteBlocked].filter(d => d >= todayIso && !manual.has(d)).sort();
+  if (!days.length) { box.innerHTML = '<p class="muted">No upcoming platform bookings.</p>'; return; }
+  const runs = [];
+  days.forEach(d => { const r = runs[runs.length - 1]; if (r && addDays(r.last, 1) === d) r.last = d; else runs.push({ first: d, last: d }); });
+  runs.forEach(r => {
+    const row = document.createElement('div'); row.className = 'entry';
+    const d = document.createElement('div'); d.className = 'd';
+    d.textContent = nice(r.first) + (r.last !== r.first ? ' – ' + nice(r.last) : '');
+    const b = document.createElement('div'); b.className = 'b';
+    const n = Math.round((fromIso(r.last) - fromIso(r.first)) / 864e5) + 1;
+    const t = document.createElement('strong'); t.textContent = 'Airbnb / Booking.com booking';
+    const sp = document.createElement('span'); sp.textContent = n + (n === 1 ? ' night' : ' nights') + ', checkout ' + nice(addDays(r.last, 1));
+    b.append(t, sp); row.append(d, b); box.appendChild(row);
+  });
+}
+
 /* ---------- entries ---------- */
 function renderEntries() {
   const box = $('entries'); box.innerHTML = '';
@@ -351,7 +377,7 @@ function renderEntries() {
     const t = document.createElement('strong'); t.textContent = ev.title || '(no title)';
     const n = document.createElement('span'); n.textContent = (ev.allDay ? '' : ev.startTime + '–' + ev.endTime + '\n') + (ev.notes || '').replace(/<[^>]*>/g, '');
     b.append(t, n);
-    if (!ev.allDay && ev.start === ev.end) { const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = 'Timed entry: does not block the day'; b.appendChild(tag); }
+    if (!ev.allDay && ev.start === ev.end) { const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = 'Day visit, not staying overnight. The whole day is blocked.'; b.appendChild(tag); }
     const x = document.createElement('button'); x.type = 'button'; x.className = 'btn ghost'; x.textContent = 'Remove';
     x.addEventListener('click', async () => {
       if (!x.dataset.armed) { x.dataset.armed = '1'; x.textContent = 'Tap again to remove'; x.classList.add('danger'); setTimeout(() => { delete x.dataset.armed; x.textContent = 'Remove'; x.classList.remove('danger'); }, 4000); return; }
