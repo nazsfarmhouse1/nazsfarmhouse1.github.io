@@ -176,6 +176,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initCalendar(root, opts = {}) {
   let blocked = [];
+  // Manual / WhatsApp blocks made on the booking admin page, served live
+  // (dates only) so they show here straight away instead of waiting for the
+  // 3-hourly sync. If this is slow or fails, the synced file alone is used.
+  const LIVE_BLOCKS_URL = 'https://script.google.com/macros/s/AKfycbywsDXFbF0SxGpzpAYTjKtUH6VsTvIL1ARF05s8zmgG-HEFtJV_ErUu2ukbZtLbA95fkQ/exec';
+  const liveBlocks = (async () => {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 4000);
+    try {
+      const res = await fetch(LIVE_BLOCKS_URL, { signal: ctrl.signal, credentials: 'omit' });
+      const data = await res.json();
+      return Array.isArray(data.blockedDates) ? data.blockedDates : [];
+    } catch (err) {
+      return [];
+    } finally {
+      clearTimeout(timer);
+    }
+  })();
   try {
     const res = await fetch('data/blocked-dates.json');
     const data = await res.json();
@@ -183,6 +200,7 @@ async function initCalendar(root, opts = {}) {
   } catch (err) {
     console.warn('Could not load blocked-dates.json', err);
   }
+  blocked = Array.from(new Set(blocked.concat(await liveBlocks)));
 
   const monthLabel = root.querySelector('.calendar-header h3');
   const grid = root.querySelector('.cal-grid');
