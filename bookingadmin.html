@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Booking Admin | Naz's Farm House</title>
+<link rel="icon" type="image/png" href="images/logo-small.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --taupe:#B9A491; --taupe-light:#D8CBBE; --forest:#3E5329; --forest-dark:#232F17;
+  --cream:#F6F1E6; --cream-2:#EFE6D4; --brown:#6B4A32; --ivory:#F8F4EA;
+  --ink:#241F18; --ink-soft:#5A5145; --red:#A3402F; --red-soft:#F3DDD6; --amber:#8A6A1F; --amber-soft:#F4E7C3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2{font-family:'Marcellus',serif;font-weight:400;text-wrap:balance}
+button,input,select,textarea{font:inherit;color:inherit}
+[hidden]{display:none !important}
+
+.bar{background:var(--forest-dark);color:var(--cream);padding:12px 16px;display:flex;align-items:center;gap:12px}
+.bar img{width:36px;height:36px;border-radius:6px}
+.bar .t{font-family:'Marcellus',serif;font-size:18px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar button{background:transparent;border:1px solid rgba(246,241,230,.4);color:var(--cream);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:14px}
+
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+.card{background:var(--ivory);border:1px solid var(--taupe-light);border-radius:12px;padding:20px;margin-bottom:18px}
+.card h2{font-size:21px;margin-bottom:12px;color:var(--forest-dark)}
+.muted{color:var(--ink-soft);font-size:14px}
+
+/* login */
+.login{max-width:380px;margin:8vh auto 0}
+.login h1{font-size:28px;margin-bottom:4px;color:var(--forest-dark)}
+label{display:block;font-size:14px;font-weight:500;margin:14px 0 5px;color:var(--ink-soft)}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--taupe);border-radius:8px;background:#fff;font-size:16px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--forest);outline-offset:1px}
+.btn{display:inline-block;background:var(--forest);color:#fff;border:0;border-radius:8px;padding:12px 20px;font-weight:500;font-size:16px;cursor:pointer;margin-top:18px}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn.wide{width:100%}
+.btn.ghost{background:transparent;color:var(--forest-dark);border:1px solid var(--taupe);margin-top:0;padding:7px 12px;font-size:14px}
+.btn.danger{background:var(--red);color:#fff;border:0}
+.msg{margin-top:14px;padding:10px 12px;border-radius:8px;font-size:15px}
+.msg.err{background:var(--red-soft);color:#6d2318}
+.msg.ok{background:#DDE8D0;color:var(--forest-dark)}
+
+/* calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-head strong{font-family:'Marcellus',serif;font-weight:400;font-size:19px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.grid .dow{font-size:12px;text-align:center;color:var(--ink-soft);padding:2px 0;text-transform:uppercase;letter-spacing:.06em}
+.day{aspect-ratio:1/1;min-height:40px;border:1px solid var(--taupe-light);border-radius:8px;background:#fff;font-size:15px;font-variant-numeric:tabular-nums;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+.day.blank{border:0;background:transparent;cursor:default}
+.day.past{opacity:.4;cursor:default}
+.day.booked{background:var(--red-soft);border-color:#DDB5AA;color:#6d2318}
+.day.manual{background:var(--amber-soft);border-color:#DCC88A;color:#5c4611}
+.day.sel{background:var(--forest);border-color:var(--forest);color:#fff}
+.day.today::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:currentColor}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:13px;color:var(--ink-soft)}
+.legend i{display:inline-block;width:13px;height:13px;border-radius:4px;margin-right:6px;vertical-align:-2px;border:1px solid rgba(0,0,0,.12)}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pick{background:var(--cream-2);border-radius:8px;padding:10px 12px;font-size:15px;margin-bottom:4px}
+
+/* entries */
+.entry{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--taupe-light)}
+.entry:first-of-type{border-top:0}
+.entry .d{flex:0 0 96px;font-weight:500;font-variant-numeric:tabular-nums;font-size:15px}
+.entry .b{flex:1;min-width:0}
+.entry .b strong{display:block;font-weight:500;overflow-wrap:anywhere}
+.entry .b span{display:block;font-size:13.5px;color:var(--ink-soft);white-space:pre-line;overflow-wrap:anywhere}
+.tag{display:inline-block;font-size:12px;background:var(--amber-soft);color:#5c4611;border-radius:20px;padding:1px 9px;margin-top:4px}
+
+@media (max-width:520px){
+  .row{grid-template-columns:1fr}
+  .entry{flex-wrap:wrap}
+  .entry .d{flex-basis:100%}
+  .card{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <img src="images/logo-small.png" alt="">
+  <div class="t">Booking Admin</div>
+  <button id="logoutBtn" hidden>Sign out</button>
+</div>
+
+<!-- LOGIN -->
+<main class="wrap" id="loginView">
+  <form class="card login" id="loginForm" autocomplete="on">
+    <h1>Sign in</h1>
+    <p class="muted">For Naz's Farm House staff. Use this page to block dates for WhatsApp, phone and walk-in bookings.</p>
+    <label for="u">Username</label>
+    <input id="u" name="username" autocomplete="username" autocapitalize="none" required>
+    <label for="p">Password</label>
+    <input id="p" name="password" type="password" autocomplete="current-password" required>
+    <button class="btn wide" id="loginBtn" type="submit">Sign in</button>
+    <div class="msg err" id="loginMsg" hidden></div>
+  </form>
+</main>
+
+<!-- APP -->
+<main class="wrap" id="appView" hidden>
+
+  <section class="card">
+    <h2>1. Pick the dates</h2>
+    <div class="cal-head">
+      <button class="btn ghost" id="prevM" type="button" aria-label="Previous month">‹ Prev</button>
+      <strong id="monthLabel"></strong>
+      <button class="btn ghost" id="nextM" type="button" aria-label="Next month">Next ›</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="legend">
+      <span><i style="background:#fff"></i>Free</span>
+      <span><i style="background:var(--amber-soft)"></i>Blocked here (manual / WhatsApp)</span>
+      <span><i style="background:var(--red-soft)"></i>Booked on Airbnb / Booking.com</span>
+      <span><i style="background:var(--forest)"></i>Your selection</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Booking details</h2>
+    <div class="pick" id="pickText">Tap the first day and the last day to block on the calendar.</div>
+    <form id="addForm">
+      <div class="row">
+        <div>
+          <label for="kind">Type</label>
+          <select id="kind">
+            <option value="Stay">Overnight stay</option>
+            <option value="Day event">Day event / party</option>
+            <option value="Hold">Hold / not available</option>
+          </select>
+        </div>
+        <div>
+          <label for="source">Came through</label>
+          <select id="source">
+            <option>WhatsApp</option>
+            <option>Phone</option>
+            <option>Website enquiry</option>
+            <option>Instagram</option>
+            <option>Walk-in</option>
+            <option>Owner</option>
+          </select>
+        </div>
+      </div>
+      <label for="name">Guest name or label</label>
+      <input id="name" maxlength="80" required placeholder="e.g. Rahul – family from Bangalore">
+      <div class="row">
+        <div>
+          <label for="guests">Guests</label>
+          <input id="guests" inputmode="numeric" maxlength="4" placeholder="e.g. 8">
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" type="tel" maxlength="30" placeholder="+91 …">
+        </div>
+      </div>
+      <label for="amount">Amount / advance received</label>
+      <input id="amount" maxlength="60" placeholder="e.g. ₹17,000 total, ₹5,000 advance paid">
+      <label for="notes">Notes</label>
+      <textarea id="notes" maxlength="500" placeholder="Arrival time, BBQ, extra beds…"></textarea>
+      <button class="btn wide" id="addBtn" type="submit">Block these dates</button>
+      <div class="msg" id="addMsg" hidden></div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Upcoming entries on the bookings calendar</h2>
+    <p class="muted" style="margin-bottom:6px">Removing an entry frees its dates on the website, Airbnb and Booking.com within a few hours.</p>
+    <div id="entries"><p class="muted">Loading…</p></div>
+  </section>
+
+</main>
+
+<script>
+/* ============================================================
+   Paste the Web app URL from the Google Apps Script deployment
+   between the quotes below (it ends in /exec).
+   ============================================================ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbywsDXFbF0SxGpzpAYTjKtUH6VsTvIL1ARF05s8zmgG-HEFtJV_ErUu2ukbZtLbA95fkQ/exec';
+
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, '0');
+const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const fromIso = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const addDays = (s, n) => { const d = fromIso(s); d.setDate(d.getDate() + n); return iso(d); };
+const nice = s => fromIso(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+const todayIso = iso(new Date());
+
+let token = null;
+try { token = sessionStorage.getItem('nfh_admin_token'); } catch (e) {}
+let view = new Date(); view.setDate(1);
+let events = [];          // from the bookings calendar
+let siteBlocked = new Set(); // from the public website data (all sources)
+let selA = null, selB = null;
+
+async function api(body) {
+  if (!API_URL.startsWith('https://')) throw new Error('This page is not connected yet: the Web app URL is missing.');
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // keeps the request "simple" (no preflight)
+    body: JSON.stringify(Object.assign({ token }, body)),
+    redirect: 'follow'
+  });
+  if (!res.ok) throw new Error('Server replied ' + res.status + '. Try again.');
+  const data = await res.json();
+  if (!data.ok && data.error === 'SESSION') { signOut(true); throw new Error('Session ended. Please sign in again.'); }
+  return data;
+}
+
+function show(el, text, cls) { el.textContent = text; el.className = 'msg ' + (cls || 'err'); el.hidden = false; }
+
+/* ---------- sign in / out ---------- */
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('loginMsg').hidden = true; $('loginBtn').disabled = true; $('loginBtn').textContent = 'Signing in…';
+  try {
+    const r = await api({ action: 'login', username: $('u').value, password: $('p').value });
+    if (!r.ok) throw new Error(r.message || 'Could not sign in.');
+    token = r.token;
+    try { sessionStorage.setItem('nfh_admin_token', token); } catch (e) {}
+    $('p').value = '';
+    openApp();
+  } catch (err) { show($('loginMsg'), err.message); }
+  $('loginBtn').disabled = false; $('loginBtn').textContent = 'Sign in';
+});
+
+function signOut(silent) {
+  if (token && !silent) api({ action: 'logout' }).catch(() => {});
+  token = null;
+  try { sessionStorage.removeItem('nfh_admin_token'); } catch (e) {}
+  $('appView').hidden = true; $('logoutBtn').hidden = true; $('loginView').hidden = false;
+}
+$('logoutBtn').addEventListener('click', () => signOut(false));
+
+async function openApp() {
+  $('loginView').hidden = true; $('appView').hidden = false; $('logoutBtn').hidden = false;
+  await refresh();
+}
+
+/* ---------- data ---------- */
+async function refresh() {
+  try {
+    const [list, site] = await Promise.all([
+      api({ action: 'list' }),
+      fetch('data/blocked-dates.json?t=' + Date.now()).then(r => r.json()).catch(() => ({ blockedDates: [] }))
+    ]);
+    if (!list.ok) throw new Error(list.message || 'Could not load the calendar.');
+    events = list.events;
+    siteBlocked = new Set(site.blockedDates || []);
+    renderCal(); renderEntries();
+  } catch (err) {
+    if (token) $('entries').innerHTML = '<div class="msg err"></div>', $('entries').firstChild.textContent = err.message;
+  }
+}
+
+function manualDays() {
+  const s = new Set();
+  events.filter(ev => ev.allDay).forEach(ev => { for (let d = ev.start; d < ev.end; d = addDays(d, 1)) s.add(d); });
+  events.filter(ev => !ev.allDay && ev.end > ev.start).forEach(ev => { for (let d = ev.start; d < ev.end; d = addDays(d, 1)) s.add(d); });
+  return s;
+}
+
+/* ---------- calendar ---------- */
+function renderCal() {
+  const g = $('grid'); g.innerHTML = '';
+  $('monthLabel').textContent = view.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+  ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(d => { const e = document.createElement('div'); e.className = 'dow'; e.textContent = d; g.appendChild(e); });
+  const manual = manualDays();
+  const lead = (view.getDay() + 6) % 7;
+  for (let i = 0; i < lead; i++) { const b = document.createElement('div'); b.className = 'day blank'; g.appendChild(b); }
+  const dim = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+  const lo = selA && selB ? (selA < selB ? selA : selB) : selA, hi = selA && selB ? (selA < selB ? selB : selA) : selA;
+  for (let n = 1; n <= dim; n++) {
+    const d = iso(new Date(view.getFullYear(), view.getMonth(), n));
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = n; b.className = 'day';
+    const taken = manual.has(d) ? 'manual' : siteBlocked.has(d) ? 'booked' : '';
+    if (taken) b.classList.add(taken);
+    if (d === todayIso) b.classList.add('today');
+    if (d < todayIso) { b.classList.add('past'); b.disabled = true; }
+    if (lo && d >= lo && d <= hi) b.classList.add('sel');
+    b.setAttribute('aria-label', nice(d) + (taken ? ', already blocked' : ', free'));
+    b.addEventListener('click', () => pick(d));
+    g.appendChild(b);
+  }
+}
+
+function pick(d) {
+  if (!selA || (selA && selB)) { selA = d; selB = null; }
+  else { selB = d; }
+  renderCal(); renderPick();
+}
+
+function selection() {
+  if (!selA) return null;
+  const lo = selB && selB < selA ? selB : selA, hi = selB && selB > selA ? selB : selA;
+  return { first: lo, last: hi, endExclusive: addDays(hi, 1), days: Math.round((fromIso(hi) - fromIso(lo)) / 864e5) + 1 };
+}
+
+function renderPick() {
+  const s = selection();
+  if (!s) { $('pickText').textContent = 'Tap the first day and the last day to block on the calendar.'; return; }
+  const taken = []; const manual = manualDays();
+  for (let d = s.first; d <= s.last; d = addDays(d, 1)) if (manual.has(d) || siteBlocked.has(d)) taken.push(nice(d));
+  let t = s.days === 1
+    ? 'Blocking ' + nice(s.first) + ' (1 day). For a stay, the guest checks out on ' + nice(s.endExclusive) + '. Tap another day to extend.'
+    : 'Blocking ' + nice(s.first) + ' to ' + nice(s.last) + ' (' + s.days + ' days). For a stay, the guest checks out on ' + nice(s.endExclusive) + '.';
+  if (taken.length) t += ' Already blocked: ' + taken.join(', ') + '.';
+  $('pickText').textContent = t;
+}
+
+$('prevM').addEventListener('click', () => { view.setMonth(view.getMonth() - 1); renderCal(); });
+$('nextM').addEventListener('click', () => { view.setMonth(view.getMonth() + 1); renderCal(); });
+
+/* ---------- add ---------- */
+$('addForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const s = selection(), m = $('addMsg');
+  if (!s) { show(m, 'Pick the dates on the calendar first.'); return; }
+  $('addBtn').disabled = true; $('addBtn').textContent = 'Saving…'; m.hidden = true;
+  try {
+    const r = await api({
+      action: 'add', start: s.first, end: s.endExclusive,
+      kind: $('kind').value, source: $('source').value, name: $('name').value,
+      guests: $('guests').value, phone: $('phone').value, amount: $('amount').value, notes: $('notes').value
+    });
+    if (!r.ok) throw new Error(r.message || 'Could not save.');
+    show(m, 'Saved: ' + nice(s.first) + (s.days > 1 ? ' to ' + nice(s.last) : '') + ' blocked. The website shows it straight away. Airbnb and Booking.com follow within a few hours.', 'ok');
+    $('addForm').reset(); selA = selB = null; renderPick();
+    await refresh();
+  } catch (err) { show(m, err.message); }
+  $('addBtn').disabled = false; $('addBtn').textContent = 'Block these dates';
+});
+
+/* ---------- entries ---------- */
+function renderEntries() {
+  const box = $('entries'); box.innerHTML = '';
+  const list = events.filter(ev => (ev.allDay ? ev.end > todayIso : ev.end >= todayIso)).sort((a, b) => a.start.localeCompare(b.start));
+  if (!list.length) { box.innerHTML = '<p class="muted">No upcoming entries.</p>'; return; }
+  list.forEach(ev => {
+    const row = document.createElement('div'); row.className = 'entry';
+    const d = document.createElement('div'); d.className = 'd';
+    const last = ev.allDay ? addDays(ev.end, -1) : ev.end;
+    d.textContent = nice(ev.start) + (last !== ev.start ? ' – ' + nice(last) : '');
+    const b = document.createElement('div'); b.className = 'b';
+    const t = document.createElement('strong'); t.textContent = ev.title || '(no title)';
+    const n = document.createElement('span'); n.textContent = (ev.allDay ? '' : ev.startTime + '–' + ev.endTime + '\n') + (ev.notes || '').replace(/<[^>]*>/g, '');
+    b.append(t, n);
+    if (!ev.allDay && ev.start === ev.end) { const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = 'Timed entry: does not block the day'; b.appendChild(tag); }
+    const x = document.createElement('button'); x.type = 'button'; x.className = 'btn ghost'; x.textContent = 'Remove';
+    x.addEventListener('click', async () => {
+      if (!x.dataset.armed) { x.dataset.armed = '1'; x.textContent = 'Tap again to remove'; x.classList.add('danger'); setTimeout(() => { delete x.dataset.armed; x.textContent = 'Remove'; x.classList.remove('danger'); }, 4000); return; }
+      x.disabled = true; x.textContent = 'Removing…';
+      try { const r = await api({ action: 'remove', id: ev.id }); if (!r.ok) throw new Error(r.message); await refresh(); }
+      catch (err) { x.disabled = false; x.textContent = 'Remove'; show($('addMsg'), err.message); }
+    });
+    row.append(d, b, x); box.appendChild(row);
+  });
+}
+
+if (token) openApp();
+</script>
+</body>
+</html>
