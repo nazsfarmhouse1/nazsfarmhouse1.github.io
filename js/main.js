@@ -149,6 +149,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const href = link.getAttribute('href') || '';
     if (href.startsWith('tel:')) {
       gtag('event', 'contact_phone', { event_category: 'engagement', event_label: href.replace('tel:', '') });
+    } else if (href.includes('wa.me/') && !link.classList.contains('whatsapp-float')) {
+      // In-page WhatsApp buttons/links (e.g. Events "Check a Date").
+      // The floating button is tracked separately above, so skip it here.
+      gtag('event', 'contact_whatsapp', { event_category: 'engagement', event_label: 'inline_link:' + location.pathname });
+    } else if (/(^|\/)book\.html(\?|#|$)/.test(href) && !/(^|\/)book\.html$/.test(location.pathname)) {
+      gtag('event', 'click_book_now', { event_category: 'engagement', event_label: location.pathname });
     } else if (href.includes('airbnb.com')) {
       gtag('event', 'click_airbnb_link', { event_category: 'engagement', event_label: 'book_page' });
     }
