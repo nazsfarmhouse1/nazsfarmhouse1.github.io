@@ -61,6 +61,22 @@
   ]
 }
 </script>
+<style>
+.reviews{ padding:90px 0; background:var(--forest-dark); }
+.review-badges{ display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:-24px 0 44px; }
+.review-badge{ border:1px solid rgba(216,203,190,0.45); color:var(--cream); border-radius:999px; padding:8px 18px; font-size:14px; letter-spacing:.3px; }
+.review-badge b{ color:var(--taupe-light); font-weight:600; }
+.review-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.review-card{ background:var(--cream); border-radius:6px; padding:28px 26px; display:flex; flex-direction:column; text-align:left; }
+.review-stars{ color:#B8862B; letter-spacing:2px; font-size:15px; margin-bottom:12px; }
+.review-card blockquote{ margin:0; color:var(--ink); font-size:15px; line-height:1.65; flex:1; }
+.review-who{ margin-top:18px; font-size:13.5px; color:var(--ink-soft); }
+.review-who strong{ color:var(--ink); font-weight:600; }
+.review-links{ text-align:center; margin-top:36px; font-size:14px; color:rgba(248,244,234,0.72); }
+.review-links a{ color:var(--taupe-light); }
+@media (max-width:1000px){ .review-grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width:680px){ .review-grid{ grid-template-columns:1fr; } .reviews{ padding:70px 0; } }
+</style>
 </head>
 <body>
 
@@ -160,10 +176,59 @@
       <span class="amenity-pill">Hot Water</span>
       <span class="amenity-pill">Self-Catered Kitchen</span>
       <span class="amenity-pill">Pets Welcome</span>
-      <span class="amenity-pill">Flexible Check-in</span>
+      <span class="amenity-pill">Check-in from 2 PM</span>
       <span class="amenity-pill">Parking on Site</span>
       <span class="amenity-pill">Carrom &amp; Games Nook</span>
     </div>
+  </div>
+</section>
+
+<!-- GUEST REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="section-head on-dark">
+      <div class="section-label">Guest Reviews</div>
+      <h2>What our guests say</h2>
+      <p>Real reviews from guests who stayed with us, word for word (shortened where marked …).</p>
+    </div>
+    <div class="review-badges">
+      <span class="review-badge"><b>5.0★</b> Google</span>
+      <span class="review-badge"><b>5.0★</b> Airbnb</span>
+      <span class="review-badge"><b>9.5/10</b> Booking.com</span>
+    </div>
+    <div class="review-grid">
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>“We stayed here for two nights as a group of 7 friends, and it was easily one of the best stays we’ve had near Wayanad… Waking up to that view and spending our evenings soaking it in made the trip truly special.”</blockquote>
+        <figcaption class="review-who"><strong>Balaji</strong> · Airbnb · October 2026</figcaption>
+      </figure>
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>“The property was beautiful, with an excellent view and all the amenities you need… Hospitality was exceptional, and had complete privacy throughout the stay.”</blockquote>
+        <figcaption class="review-who"><strong>Gopika</strong> · Airbnb · October 2026</figcaption>
+      </figure>
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>“The view was beautiful with lovely bougainvillea, the stay was comfortable, and the privacy was a big plus… Everything you need for a relaxing and fun getaway is in one place!”</blockquote>
+        <figcaption class="review-who"><strong>Thansiha</strong> · Booking.com · October 2026</figcaption>
+      </figure>
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>“The standout feature is the breathtaking hilltop location, surrounded by lush greenery and dense forest… The owner is exceptionally kind, helpful, and accommodating.”</blockquote>
+        <figcaption class="review-who"><strong>Mohammed Anwar</strong> · Airbnb · October 2026</figcaption>
+      </figure>
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>“The place is absolutely beautiful with stunning, scenic views. Everything was spotless and very clean. The host went above and beyond and was incredibly helpful throughout our stay.”</blockquote>
+        <figcaption class="review-who"><strong>Nikitha</strong> · Airbnb · September 2026</figcaption>
+      </figure>
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>“The caretaker stays close by, so help is easily accessible… The property is in a peaceful, picturesque spot with beautiful views, but it’s still not too far from town.”</blockquote>
+        <figcaption class="review-who"><strong>Muhammed Ijaz</strong> · Airbnb · September 2026</figcaption>
+      </figure>
+    </div>
+    <div class="review-links">Read more on <a href="https://www.airbnb.com/rooms/1760040659329405284" target="_blank" rel="noopener">Airbnb</a> and <a href="https://www.booking.com/hotel/in/hillside-home-with-forest-views-near-wayanad.html" target="_blank" rel="noopener">Booking.com</a></div>
   </div>
 </section>
 
