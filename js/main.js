@@ -152,7 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (href.includes('wa.me/') && !link.classList.contains('whatsapp-float')) {
       // In-page WhatsApp buttons/links (e.g. Events "Check a Date").
       // The floating button is tracked separately above, so skip it here.
-      gtag('event', 'contact_whatsapp', { event_category: 'engagement', event_label: 'inline_link:' + location.pathname });
+      // Links with their own inline gtag onclick (book.html top button) are
+      // already counted, so skip them too to avoid double-counting.
+      if ((link.getAttribute('onclick') || '').includes('gtag(')) return;
+      const label = link.dataset.gaLabel || ('inline_link:' + location.pathname);
+      gtag('event', 'contact_whatsapp', { event_category: 'engagement', event_label: label });
     } else if (/(^|\/)book\.html(\?|#|$)/.test(href) && !/(^|\/)book\.html$/.test(location.pathname)) {
       gtag('event', 'click_book_now', { event_category: 'engagement', event_label: location.pathname });
     } else if (href.includes('airbnb.com')) {
